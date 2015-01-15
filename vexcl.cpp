@@ -6,6 +6,23 @@ vex::Context* VexCLTest::CreateContext() {
   return ctx;
 }
 
+void VexCLTest::WarmUp(){
+
+ // This code is taken from the VexCL demo
+ const size_t N = 1024 * 1024;
+ const size_t M = 1024;
+ std::vector<double> A(N, 0);
+ std::vector<double> B = random_vector<double>(N);
+ std::vector<double> C = random_vector<double>(N);
+ std::vector<double> D = random_vector<double>(N);
+ vex::vector<double> a(*ctx, A);
+ vex::vector<double> b(*ctx, B);
+ vex::vector<double> c(*ctx, C);
+ vex::vector<double> d(*ctx, D);
+ a += b + c * d;
+
+}
+
  vex::vector<double> VexCLTest::ConvertVector(blaze::DynamicVector<double>& blaze_vec) {
    unsigned int num_rows = blaze_vec.size();
 
