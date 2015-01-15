@@ -13,6 +13,10 @@ class VexCLTest {
 public:
 
   VexCLTest(){}
+  ~VexCLTest(){
+    delete ctx;
+
+  }
 
   vex::Context * CreateContext();
 
