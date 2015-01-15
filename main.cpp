@@ -11,8 +11,6 @@ std::chrono::duration<double> vexcl_time;
 
 std::chrono::time_point<std::chrono::system_clock> start, end;
 
-
-
 int main(int argc, char* argv[]) {
 
   blaze::CompressedMatrix<double> D_T_blaze = BlazeTest::ConvertMatrix("D_T_" + std::string(argv[1]) + ".dat");
@@ -64,36 +62,31 @@ int main(int argc, char* argv[]) {
   end = std::chrono::system_clock::now();
   vexcl_time = end - start;
 
+  // Two Spmv each with 2*nnz operations
+  uint operations = 2 * 2 * num_nonzeros;
+  uint moved = 2 * (num_nonzeros + 2 * num_rows) * sizeof(double);
 
+  double blaze_single = blaze_time.count() / RUNS;
+  double vex_single = vexcl_time.count() / RUNS;
+  //double eig_single = eigen_time.count() / RUNS;
 
-
-
-  //
-  //  // Two Spmv each with 2*nnz operations
-  //  uint operations = 2 * 2 * num_nonzeros;
-  //  uint moved = 2 * (num_nonzeros + 2 * num_rows) * sizeof(double);
-  //
-  //  double blaze_single = blaze_time / RUNS;
-  //  double vex_single = vexcl_time / RUNS;
-  //  double eig_single = eigen_time / RUNS;
-  //
-  //  printf("Blaze sec, VexCL sec, Speedup, Blaze Flops, VexCL Flops, Bandwidth Blaze, Bandwidth VexCL \n");
-  //  printf("%f, %f, %f, %f, %f, %f, %f\n",
-  //         blaze_single,
-  //         vex_single,
-  //         blaze_single / vex_single,
-  //         operations / blaze_single / GFLOP,
-  //         operations / vex_single / GFLOP,
-  //         moved / blaze_single / GFLOP,
-  //         moved / vex_single / GFLOP);
-
-  //  printf("Blaze %f sec. Eigen %f sec. VexCL %f sec.\n", blaze_single, eig_single, vex_single);
-  //  printf("Speedup: Blaze vs Eigen %f\n", blaze_single / eig_single);
-  //  printf("Speedup: Blaze vs VexCL %f\n", blaze_single / vex_single);
-  //  printf("Speedup: Eigen vs VexCL %f\n", eig_single / vex_single);
-  //
-  //  printf("Flops: Blaze %f Eigen %f VexCL %f\n", operations / blaze_single / GFLOP, operations / eig_single / GFLOP, operations / vex_single / GFLOP);
-  //  printf("Bandwidth: Blaze %f Eigen %f VexCL %f\n", moved / blaze_single / GFLOP, moved / eig_single / GFLOP, moved / vex_single / GFLOP);
+  printf("Blaze sec, VexCL sec, Speedup, Blaze Flops, VexCL Flops, Bandwidth Blaze, Bandwidth VexCL \n");
+  printf("%f, %f, %f, %f, %f, %f, %f\n",
+         blaze_single,
+         vex_single,
+         blaze_single / vex_single,
+         operations / blaze_single / GFLOP,
+         operations / vex_single / GFLOP,
+         moved / blaze_single / GFLOP,
+         moved / vex_single / GFLOP);
+//
+//  printf("Blaze %f sec. Eigen %f sec. VexCL %f sec.\n", blaze_single, eig_single, vex_single);
+//  printf("Speedup: Blaze vs Eigen %f\n", blaze_single / eig_single);
+//  printf("Speedup: Blaze vs VexCL %f\n", blaze_single / vex_single);
+//  printf("Speedup: Eigen vs VexCL %f\n", eig_single / vex_single);
+//
+//  printf("Flops: Blaze %f Eigen %f VexCL %f\n", operations / blaze_single / GFLOP, operations / eig_single / GFLOP, operations / vex_single / GFLOP);
+//  printf("Bandwidth: Blaze %f Eigen %f VexCL %f\n", moved / blaze_single / GFLOP, moved / eig_single / GFLOP, moved / vex_single / GFLOP);
 
   return 0;
 }
