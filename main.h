@@ -2,7 +2,7 @@
 #include "utils.h"
 #include "blaze.h"
 #include "vexcl.h"
-
+#include "viennacl.h"
 
 /// Function takes a compressed blaze matrix and then generates a CSR representation from it, this is used for VexCL
 
