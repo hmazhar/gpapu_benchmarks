@@ -1,9 +1,9 @@
 #=============================================================================
-# CMake configuration file for OCL_BENCHMARK
+# CMake configuration file for GPAPU_BENCHMARK
 #=============================================================================
 
 cmake_minimum_required(VERSION 2.8)
-project(ocl_benchmark)
+project(gpapu_benchmark)
 
 # Location of additional CMAKE modules
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -59,5 +59,5 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIR})
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-ADD_EXECUTABLE(benchmark  main.cpp)
+ADD_EXECUTABLE(benchmark  main.cpp blaze.cpp vexcl.cpp)
 TARGET_LINK_LIBRARIES(benchmark ${OPENCL_LIBRARIES} boost_system)
