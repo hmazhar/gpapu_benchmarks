@@ -19,6 +19,7 @@ struct CSR {
   std::vector<double> val;    // Values for the non zero entries
   unsigned int num_rows;      // Number of Rows
   unsigned int num_cols;      // Number of Columns
+  unsigned int num_nonzero;   // Number of non zeros
 };
 
 //

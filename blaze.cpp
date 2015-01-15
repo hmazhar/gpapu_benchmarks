@@ -66,6 +66,7 @@ CSR  BlazeTest::ConvertSparse(blaze::CompressedMatrix<double>& mat) {
 
   data.num_rows = mat.rows();
   data.num_cols = mat.columns();
+  data.num_nonzero = mat.nonZeros();
 
   return data;
 }
