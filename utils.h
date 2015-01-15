@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <random>
 
 //
 // Define a structure that holds a sparse CSR representation
@@ -20,7 +21,6 @@ struct CSR {
   unsigned int num_cols;      // Number of Columns
 };
 
-
 //
 // Read the contents of an ascii file as a string
 // Here the file is read all at once for performance reasons
@@ -32,17 +32,25 @@ static std::string ReadFileAsString(std::string fname) {
 }
 
 // The number of floating point operations is 2 * the number of non zeros
-static double ComputeFlopSPMV(unsigned int num_nonzeros){
-  return 2* num_nonzeros;
-
-}
+static double ComputeFlopSPMV(unsigned int num_nonzeros) { return 2 * num_nonzeros; }
 
 // The amount of memory moved is the number of nonzeros + 2 * number of rows
-static double ComputeBandwidthSPMV(unsigned int num_nonzeros, unsigned int num_rows){
-  return (num_nonzeros + 2 * num_rows) * sizeof(double);
+static double ComputeBandwidthSPMV(unsigned int num_nonzeros, unsigned int num_rows) { return (num_nonzeros + 2 * num_rows) * sizeof(double); }
 
+
+
+// Generates a vector with random values
+template <typename real>
+std::vector<real> random_vector(size_t n) {
+  std::default_random_engine rng(std::rand());
+  std::uniform_real_distribution<real> rnd(0.0, 1.0);
+  std::vector<real> x(n);
+  for (size_t i = 0; i < n; ++i)
+    x[i] = rnd(rng);
+  return x;
 }
 
 #define RUNS 100
+#define GFLOP 1000000000
 
 #endif
