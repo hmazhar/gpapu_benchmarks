@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
   num_nonzeros = D_T_blaze.nonZeros();
   printf("D_T: rows:, columns:, non zeros:,M_invD: rows:, columns:, non zeros:, gamma: size:, b: size: Memory\n");
   printf("%d, %d, %d, %d, %d, %d, %d, %d %f\n", num_rows, num_cols, num_nonzeros, M_invD_blaze.rows(), M_invD_blaze.columns(), M_invD_blaze.nonZeros(), gamma_blaze.size(), rhs_blaze.size(),
-         ((num_nonzeros + M_invD_blaze.nonZeros() + gamma_blaze.size() + rhs_blaze.size()) * sizeof(double)) / GFLOP);
+         ((num_nonzeros + M_invD_blaze.nonZeros() + gamma_blaze.size() + rhs_blaze.size()) / double(GFLOP)) * sizeof(double) );
 
   //  printf("D_T: rows: %d, columns: %d, non zeros: %d\n", D_T_blaze.rows(), D_T_blaze.columns(), D_T_blaze.nonZeros());
   //  printf("M_invD: rows: %d, columns: %d, non zeros: %d\n", M_invD_blaze.rows(), M_invD_blaze.columns(), M_invD_blaze.nonZeros());
