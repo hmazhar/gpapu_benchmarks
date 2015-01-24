@@ -62,6 +62,6 @@ void ViennaCLTest::RunSPMV(viennacl::compressed_matrix<double>& D_T, viennacl::c
   for (size_t i = 0; i < RUNS; i++) {
     temporary = viennacl::linalg::prod(M_invD, gamma);
     result = viennacl::linalg::prod(D_T, temporary);
-    viennacl::ocl::get_queue().finish();
+    viennacl::backend::finish();
   }
 }
