@@ -47,7 +47,7 @@ viennacl::compressed_matrix<double> ViennaCLTest::ConvertMatrix(CSR& data) {
   std::vector<double>& val = data.val;
 
   // vex::SpMat<double> mat(*ctx, num_rows, num_cols, row.data(), col.data(), val.data());
-  viennacl::compressed_matrix<double> mat;
+  viennacl::compressed_matrix<double> mat(num_rows,num_cols, num_nonzero);
   mat.set(row.data(), col.data(), val.data(), num_rows, num_cols, num_nonzero);
 
   return mat;
@@ -62,5 +62,6 @@ void ViennaCLTest::RunSPMV(viennacl::compressed_matrix<double>& D_T, viennacl::c
   for (size_t i = 0; i < RUNS; i++) {
     temporary = viennacl::linalg::prod(M_invD, gamma);
     result = viennacl::linalg::prod(D_T, temporary);
+    viennacl::ocl::get_queue().finish();
   }
 }

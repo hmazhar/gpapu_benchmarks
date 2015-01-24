@@ -41,6 +41,21 @@ int main(int argc, char* argv[]) {
     end = std::chrono::system_clock::now();
     blaze_time = end - start;
   }
+
+  {
+    ViennaCLTest viennacl_test;
+    viennacl_test.WarmUp();
+
+    viennacl::compressed_matrix<double> D_T_vcl = viennacl_test.ConvertMatrix(D_T_csr);
+    viennacl::compressed_matrix<double> M_invD_vcl = viennacl_test.ConvertMatrix(M_invD_csr);
+    viennacl::vector<double> gamma_vcl = viennacl_test.ConvertVector(gamma_blaze);
+
+    start = std::chrono::system_clock::now();
+    viennacl_test.RunSPMV(D_T_vcl, M_invD_vcl, gamma_vcl);
+    end = std::chrono::system_clock::now();
+    vcl_time = end - start;
+  }
+
   {
     VexCLTest vexcl_test;
     vexcl_test.CreateContext();
@@ -55,19 +70,7 @@ int main(int argc, char* argv[]) {
     end = std::chrono::system_clock::now();
     vexcl_time = end - start;
   }
-  {
-    ViennaCLTest viennacl_test;
-    viennacl_test.WarmUp();
 
-    viennacl::compressed_matrix<double> D_T_vcl = viennacl_test.ConvertMatrix(D_T_csr);
-    viennacl::compressed_matrix<double> M_invD_vcl = viennacl_test.ConvertMatrix(M_invD_csr);
-    viennacl::vector<double> gamma_vcl = viennacl_test.ConvertVector(gamma_blaze);
-
-    start = std::chrono::system_clock::now();
-    viennacl_test.RunSPMV(D_T_vcl, M_invD_vcl, gamma_vcl);
-    end = std::chrono::system_clock::now();
-    vcl_time = end - start;
-  }
   // Two Spmv each with 2*nnz operations
   uint operations = 2 * 2 * num_nonzeros;
   uint moved = 2 * (num_nonzeros + 2 * num_rows) * sizeof(double);

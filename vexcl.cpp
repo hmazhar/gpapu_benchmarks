@@ -56,6 +56,11 @@ void VexCLTest::RunSPMV(vex::SpMat<double>& D_T, vex::SpMat<double>& M_invD, vex
 
   vex::vector<double> temporary(*ctx, num_rows);
   vex::vector<double> result(*ctx, num_rows);
-  SPMV(D_T, M_invD, gamma, temporary, result);
-  ctx->finish();
+
+  for (size_t i = 0; i < RUNS; i++) {
+    temporary = M_invD * gamma;
+    result = D_T * temporary;
+    ctx->finish();
+  }
+
 }
