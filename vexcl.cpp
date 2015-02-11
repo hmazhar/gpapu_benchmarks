@@ -23,17 +23,11 @@ void VexCLTest::WarmUp(){
 
 }
 
- vex::vector<double> VexCLTest::ConvertVector(blaze::DynamicVector<double>& blaze_vec) {
-   unsigned int num_rows = blaze_vec.size();
-
-  std::vector<double> temp(num_rows);
-
-  for (int i = 0; i < num_rows; i++) {
-    temp[i] = blaze_vec[i];
-  }
+ vex::vector<double> VexCLTest::ConvertVector(const std::vector<double> & data) {
+   unsigned int num_rows = data.size();
 
   vex::vector<double> vex_vec(*ctx, num_rows);
-  vex::copy(temp, vex_vec);
+  vex::copy(data, vex_vec);
 
   return vex_vec;
 }

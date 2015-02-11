@@ -18,8 +18,8 @@ public:
 
   BlazeTest(){}
 
-  static blaze::DynamicVector<double> ConvertVector(const std::string filename);
-  static blaze::CompressedMatrix<double> ConvertMatrix(const std::string filename);
+  static blaze::DynamicVector<double> ConvertVector(const std::vector<double> & data);
+  static blaze::CompressedMatrix<double> ConvertMatrix(const COO& data);
 
   static CSR ConvertSparse(blaze::CompressedMatrix<double>& mat);    // Input: The matrix to be converted
 

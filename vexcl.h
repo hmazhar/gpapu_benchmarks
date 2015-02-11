@@ -29,7 +29,7 @@ public:
 
   // The way that I wrote this class, by using a pointer to the context,
   // the convert functions cannot be static because the context pointer is used
-   vex::vector<double> ConvertVector(blaze::DynamicVector <double>& vec);
+   vex::vector<double> ConvertVector(const std::vector<double> & data);
    vex::SpMat<double> ConvertMatrix(CSR & data);
 
   void RunSPMV(vex::SpMat<double>& D_T, vex::SpMat<double>& M_invD, vex::vector<double>& gamma);

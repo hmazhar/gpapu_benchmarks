@@ -40,8 +40,8 @@ ENDIF()
 # Eigen -- required for some parallel solvers
 # ------------------------------------------------------------------------------
 
-#FIND_PACKAGE(Eigen3)
-#INCLUDE_DIRECTORIES( ${EIGEN3_INCLUDE_DIR} )
+FIND_PACKAGE(Eigen3)
+INCLUDE_DIRECTORIES( ${EIGEN3_INCLUDE_DIR} )
 
 # ------------------------------------------------------------------------------
 # BOOST -- required for BLAZE
@@ -59,5 +59,5 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIR})
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-ADD_EXECUTABLE(benchmark  main.cpp blaze.cpp vexcl.cpp viennacl.cpp)
+ADD_EXECUTABLE(benchmark  main.cpp blaze.cpp boost.cpp vexcl.cpp viennacl.cpp eigen.cpp)
 TARGET_LINK_LIBRARIES(benchmark ${OPENCL_LIBRARIES} boost_system)
