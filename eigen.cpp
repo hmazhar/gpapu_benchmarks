@@ -11,6 +11,7 @@ Eigen::VectorXd EigenTest::ConvertVector(const std::vector<double> & data) {
   return vec;
 }
 Eigen::SparseMatrix<double> EigenTest::ConvertMatrix(const std::vector<Eigen::Triplet<double> >& data, const COO& coo_data) {
+  std::cout<<"Creating an Eigen Sparse matrix "<<coo_data.num_rows<<" "<<coo_data.num_cols<<" "<<data.size()<<std::endl;
   Eigen::SparseMatrix<double> mat(coo_data.num_rows, coo_data.num_cols);
   mat.setFromTriplets(data.begin(), data.end());
   return mat;
