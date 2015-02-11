@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
     blaze_test.RunSPMV(D_T_blaze, M_invD_blaze, gamma_blaze);
     end = std::chrono::system_clock::now();
     elapsed = end - start;
-    std::cout << "Blaze Time: " << elapsed.count()<<std::endl;
+    std::cout << "Blaze Time: " << elapsed.count()/ RUNS<<std::endl;
   }
 
   std::cout << "Eigen Triplet:\n";
@@ -112,7 +112,7 @@ int main(int argc, char* argv[]) {
     EigenTest::RunSPMV(D_T_eigen, M_invD_eigen, gamma_eigen);
     end = std::chrono::system_clock::now();
     elapsed = end - start;
-    std::cout << "Eigen Time: " << elapsed.count()<<std::endl;
+    std::cout << "Eigen Time: " << elapsed.count()/ RUNS<<std::endl;
   }
 
   //
