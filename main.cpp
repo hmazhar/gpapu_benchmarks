@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
   std::vector<Eigen::Triplet<double> > M_invD_triplet = EigenTest::ConvertCOO(M_invD);
   std::cout << "Eigen Convert:\n";
   start = std::chrono::system_clock::now();
-  Eigen::SparseMatrix<double> D_T_eigen = EigenTest::ConvertMatrix(D_T_triplet, D_T);
+  Eigen::SparseMatrix<double> D_T_eigen = EigenTest::ConvertMatrix(D_T_triplet, D_T, true);
   end = std::chrono::system_clock::now();
   elapsed = end - start;
   std::cout << "Time to load D_T Eigen: " << elapsed.count()<<std::endl;
