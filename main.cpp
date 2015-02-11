@@ -52,13 +52,12 @@ void ReadVector(std::vector<double>& data, const std::string filename) {
 
 int main(int argc, char* argv[]) {
   COO D_T, M_invD;
-  std::vector<double> gamma, rhs;
+  std::vector<double> gamma;
   std::cout << " Read in data to sparse COO structure: \n";
   start = std::chrono::system_clock::now();
   ReadSparse(D_T, "D_T_" + std::string(argv[1]) + ".mat");
   ReadSparse(M_invD, "M_invD_" + std::string(argv[1]) + ".mat");
   ReadVector(gamma, "gamma_" + std::string(argv[1]) + ".mat");
-  ReadVector(rhs, "b_" + std::string(argv[1]) + ".mat");
   end = std::chrono::system_clock::now();
   elapsed = end - start;
   std::cout << "Time to read data from file: " << elapsed.count();
@@ -76,9 +75,9 @@ int main(int argc, char* argv[]) {
   std::cout << "Time to load M_invD Blaze: " << elapsed.count();
 
   blaze::DynamicVector<double> gamma_blaze = BlazeTest::ConvertVector(gamma);
-  blaze::DynamicVector<double> rhs_blaze = BlazeTest::ConvertVector(rhs);
 
   {
+    std::cout << "Blaze Test:\n";
     BlazeTest blaze_test;
     start = std::chrono::system_clock::now();
     blaze_test.RunSPMV(D_T_blaze, M_invD_blaze, gamma_blaze);
@@ -87,6 +86,7 @@ int main(int argc, char* argv[]) {
     std::cout << "Blaze Time: " << elapsed.count();
   }
 
+  std::cout << "Eigen Convert:\n";
   // Convert the COO into Eigen triplets
   // Timing this part isn't important, in practice you would not need to do this
   std::vector<Eigen::Triplet<double> > D_T_triplet = EigenTest::ConvertCOO(D_T);
@@ -105,9 +105,9 @@ int main(int argc, char* argv[]) {
   std::cout << "Time to load D_T Eigen: " << elapsed.count();
 
   Eigen::VectorXd gamma_eigen = EigenTest::ConvertVector(gamma);
-  Eigen::VectorXd rhs_eigen = EigenTest::ConvertVector(rhs);
 
   {
+    std::cout << "Eigen Test:\n";
     start = std::chrono::system_clock::now();
     EigenTest::RunSPMV(D_T_eigen, M_invD_eigen, gamma_eigen);
     end = std::chrono::system_clock::now();
