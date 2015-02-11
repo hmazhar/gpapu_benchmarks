@@ -26,7 +26,7 @@ std::vector<Eigen::Triplet<double> > EigenTest::ConvertCOO(const COO& data) {
     triplet_data[i] = Eigen::Triplet<double>(data.row[i],data.col[i],data.val[i]);
   }
   std::cout<<"Created an Eigen Triplet "<<triplet_data.size()<<std::endl;
-
+  return triplet_data;
 }
 
 
