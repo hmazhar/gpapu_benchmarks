@@ -60,19 +60,19 @@ int main(int argc, char* argv[]) {
   ReadVector(gamma, "gamma_" + std::string(argv[1]) + ".mat");
   end = std::chrono::system_clock::now();
   elapsed = end - start;
-  std::cout << "Time to read data from file: " << elapsed.count()<<std::endl;
+  std::cout << "Time to read data from file: " << elapsed.count() << std::endl;
 
   start = std::chrono::system_clock::now();
   blaze::CompressedMatrix<double> D_T_blaze = BlazeTest::ConvertMatrix(D_T);
   end = std::chrono::system_clock::now();
   elapsed = end - start;
-  std::cout << "Time to load D_T Blaze: " << elapsed.count()<<std::endl;
+  std::cout << "Time to load D_T Blaze: " << elapsed.count() << std::endl;
 
   start = std::chrono::system_clock::now();
   blaze::CompressedMatrix<double> M_invD_blaze = BlazeTest::ConvertMatrix(M_invD);
   end = std::chrono::system_clock::now();
   elapsed = end - start;
-  std::cout << "Time to load M_invD Blaze: " << elapsed.count()<<std::endl;
+  std::cout << "Time to load M_invD Blaze: " << elapsed.count() << std::endl;
 
   blaze::DynamicVector<double> gamma_blaze = BlazeTest::ConvertVector(gamma);
 
@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
     blaze_test.RunSPMV(D_T_blaze, M_invD_blaze, gamma_blaze);
     end = std::chrono::system_clock::now();
     elapsed = end - start;
-    std::cout << "Blaze Time: " << elapsed.count()/ RUNS<<std::endl;
+    std::cout << "Blaze Time: " << elapsed.count() / RUNS << std::endl;
   }
 
   std::cout << "Eigen Triplet:\n";
@@ -92,17 +92,22 @@ int main(int argc, char* argv[]) {
   std::vector<Eigen::Triplet<double> > D_T_triplet = EigenTest::ConvertCOO(D_T);
   std::vector<Eigen::Triplet<double> > M_invD_triplet = EigenTest::ConvertCOO(M_invD);
   std::cout << "Eigen Convert:\n";
-  start = std::chrono::system_clock::now();
-  Eigen::SparseMatrix<double> D_T_eigen = EigenTest::ConvertMatrix(D_T_triplet, D_T, true);
-  end = std::chrono::system_clock::now();
-  elapsed = end - start;
-  std::cout << "Time to load D_T Eigen: " << elapsed.count()<<std::endl;
+
+  Eigen::SparseMatrix<double> D_T_eigen(D_T.num_rows, D_T.num_cols);
+  D_T_eigen.reserve(Eigen::VectorXi::Constant(D_T.num_cols, 12));
+  Eigen::SparseMatrix<double> M_invD_eigen(M_invD.num_rows, M_invD.num_cols);
 
   start = std::chrono::system_clock::now();
-  Eigen::SparseMatrix<double> M_invD_eigen = EigenTest::ConvertMatrix(M_invD_triplet, M_invD);
+  EigenTest::ConvertMatrix(D_T_triplet, D_T, D_T_eigen);
   end = std::chrono::system_clock::now();
   elapsed = end - start;
-  std::cout << "Time to load D_T Eigen: " << elapsed.count()<<std::endl;
+  std::cout << "Time to load D_T Eigen: " << elapsed.count() << std::endl;
+
+  start = std::chrono::system_clock::now();
+  EigenTest::ConvertMatrix(M_invD_triplet, M_invD, M_invD_eigen);
+  end = std::chrono::system_clock::now();
+  elapsed = end - start;
+  std::cout << "Time to load D_T Eigen: " << elapsed.count() << std::endl;
 
   Eigen::VectorXd gamma_eigen = EigenTest::ConvertVector(gamma);
 
@@ -112,7 +117,7 @@ int main(int argc, char* argv[]) {
     EigenTest::RunSPMV(D_T_eigen, M_invD_eigen, gamma_eigen);
     end = std::chrono::system_clock::now();
     elapsed = end - start;
-    std::cout << "Eigen Time: " << elapsed.count()/ RUNS<<std::endl;
+    std::cout << "Eigen Time: " << elapsed.count() / RUNS << std::endl;
   }
 
   //
