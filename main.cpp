@@ -84,6 +84,12 @@ int main(int argc, char* argv[]) {
     end = std::chrono::system_clock::now();
     elapsed = end - start;
     std::cout << "Blaze Time: " << elapsed.count() / RUNS << std::endl;
+
+    start = std::chrono::system_clock::now();
+    blaze::CompressedMatrix<double> Transposed = blaze::trans(D_T_blaze);
+    end = std::chrono::system_clock::now();
+    elapsed = end - start;
+    std::cout << "Blaze Transpose Time: " << elapsed.count() / RUNS << std::endl;
   }
 
   std::cout << "Eigen Triplet:\n";
@@ -118,7 +124,18 @@ int main(int argc, char* argv[]) {
     end = std::chrono::system_clock::now();
     elapsed = end - start;
     std::cout << "Eigen Time: " << elapsed.count() / RUNS << std::endl;
+
+    start = std::chrono::system_clock::now();
+    Eigen::SparseMatrix<double> Transposed(D_T_eigen.transpose());
+    end = std::chrono::system_clock::now();
+    elapsed = end - start;
+    std::cout << "Eigen Transpose Time: " << elapsed.count() / RUNS << std::endl;
   }
+
+
+
+
+
 
   //
   //  {
