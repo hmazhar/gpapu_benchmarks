@@ -35,9 +35,8 @@ void ReadSparse(COO& data, const std::string filename) {
 }
 
 void ReadVector(std::vector<double>& data, const std::string filename) {
-
+  std::cout << "Reading: " << filename << std::endl;
   std::stringstream ss(ReadFileAsString(filename));
-  unsigned int i, j;
   double v;
 
   while (true) {
@@ -59,7 +58,7 @@ int main(int argc, char* argv[]) {
   ReadSparse(D_T, "D_T_" + std::string(argv[1]) + ".mat");
   ReadSparse(M_invD, "M_invD_" + std::string(argv[1]) + ".mat");
   ReadVector(gamma, "gamma_" + std::string(argv[1]) + ".mat");
-  ReadVector(rhs, "rhs_" + std::string(argv[1]) + ".mat");
+  ReadVector(rhs, "b_" + std::string(argv[1]) + ".mat");
   end = std::chrono::system_clock::now();
   elapsed = end - start;
   std::cout << "Time to read data from file: " << elapsed.count();
