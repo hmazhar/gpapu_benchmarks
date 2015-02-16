@@ -23,32 +23,33 @@ struct CSR {
 };
 
 struct COO {
-  std::vector<size_t> row;    // Row entries for matrix
-  std::vector<size_t> col;    // Column entries for matrix
-  std::vector<double> val;    // Values for the non zero entries
-  unsigned int num_rows;      // Number of Rows
-  unsigned int num_cols;      // Number of Columns
-  unsigned int num_nonzero;   // Number of non zeros
-  void update(){
-
+  std::vector<size_t> row;     // Row entries for matrix
+  std::vector<size_t> col;     // Column entries for matrix
+  std::vector<double> val;     // Values for the non zero entries
+  unsigned int num_rows;       // Number of Rows
+  unsigned int num_cols;       // Number of Columns
+  unsigned int num_nonzero;    // Number of non zeros
+  // Once the data has been read in, compute the number of rows, columns, and nonzeros
+  void update() {
     num_rows = row.back();
-    num_cols = *std::max_element(col.begin(),col.end());
+    num_cols = *std::max_element(col.begin(), col.end());
     num_nonzero = val.size();
-
-    std::cout<<"Compute data: "<<num_rows<<" "<<num_cols<<" "<<num_nonzero<<std::endl;
-
+    std::cout << "COO Updated: [Rows, Columns, Non Zeros] [" << num_rows << ", " << num_cols << ", " << num_nonzero << "] " << std::endl;
   }
-
 };
 
 //
 // Read the contents of an ascii file as a string
 // Here the file is read all at once for performance reasons
-//
 static std::string ReadFileAsString(std::string fname) {
-  std::ifstream file(fname.c_str());
-  std::string buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-  return buffer;
+  std::ifstream in(fname.c_str(), std::ios::in);
+  std::string contents;
+  in.seekg(0, std::ios::end);
+  contents.resize(in.tellg());
+  in.seekg(0, std::ios::beg);
+  in.read(&contents[0], contents.size());
+  in.close();
+  return (contents);
 }
 
 // The number of floating point operations is 2 * the number of non zeros
