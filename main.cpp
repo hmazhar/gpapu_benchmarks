@@ -52,6 +52,24 @@ int main(int argc, char* argv[]) {
   std::vector<double> gamma;
 
   if (argc == 1) {
+    std::cout << "Data not specified, generating a test matrix: \n";
+    D_T.row.push_back(0); D_T.col.push_back(0); D_T.val.push_back(1);
+    D_T.row.push_back(0); D_T.col.push_back(2); D_T.val.push_back(2);
+    D_T.row.push_back(1); D_T.col.push_back(2); D_T.val.push_back(3);
+    D_T.row.push_back(2); D_T.col.push_back(0); D_T.val.push_back(4);
+    D_T.row.push_back(2); D_T.col.push_back(1); D_T.val.push_back(5);
+    D_T.row.push_back(2); D_T.col.push_back(2); D_T.val.push_back(6);
+    D_T.Update();
+    M_invD.row.push_back(0); M_invD.col.push_back(0); M_invD.val.push_back(1);
+    M_invD.row.push_back(0); M_invD.col.push_back(2); M_invD.val.push_back(4);
+    M_invD.row.push_back(1); M_invD.col.push_back(2); M_invD.val.push_back(5);
+    M_invD.row.push_back(2); M_invD.col.push_back(0); M_invD.val.push_back(2);
+    M_invD.row.push_back(2); M_invD.col.push_back(1); M_invD.val.push_back(3);
+    M_invD.row.push_back(2); M_invD.col.push_back(2); M_invD.val.push_back(6);
+    M_invD.Update();
+    gamma.push_back(6);
+    gamma.push_back(5);
+    gamma.push_back(4);
   } else {
     std::cout << "Read in data to sparse COO structure: \n";
     start = std::chrono::system_clock::now();
