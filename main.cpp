@@ -31,7 +31,7 @@ void ReadSparse(COO& data, const std::string filename) {
     data.col.push_back(j);
     data.val.push_back(v);
   }
-  data.update();
+  data.Update();
 }
 
 void ReadVector(std::vector<double>& data, const std::string filename) {

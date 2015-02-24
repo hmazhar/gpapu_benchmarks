@@ -10,6 +10,23 @@
 #include <fstream>
 #include <random>
 #include <algorithm>
+
+struct COO {
+  std::vector<size_t> row;     // Row entries for matrix
+  std::vector<size_t> col;     // Column entries for matrix
+  std::vector<double> val;     // Values for the non zero entries
+  unsigned int num_rows;       // Number of Rows
+  unsigned int num_cols;       // Number of Columns
+  unsigned int num_nonzero;    // Number of non zeros
+  // Once the data has been read in, compute the number of rows, columns, and nonzeros
+  void Update() {
+    num_rows = row.back();
+    num_cols = *std::max_element(col.begin(), col.end());
+    num_nonzero = val.size();
+    std::cout << "COO Updated: [Rows, Columns, Non Zeros] [" << num_rows << ", " << num_cols << ", " << num_nonzero << "] " << std::endl;
+  }
+};
+
 //
 // Define a structure that holds a sparse CSR representation
 //
@@ -20,21 +37,30 @@ struct CSR {
   unsigned int num_rows;      // Number of Rows
   unsigned int num_cols;      // Number of Columns
   unsigned int num_nonzero;   // Number of non zeros
-};
 
-struct COO {
-  std::vector<size_t> row;     // Row entries for matrix
-  std::vector<size_t> col;     // Column entries for matrix
-  std::vector<double> val;     // Values for the non zero entries
-  unsigned int num_rows;       // Number of Rows
-  unsigned int num_cols;       // Number of Columns
-  unsigned int num_nonzero;    // Number of non zeros
-  // Once the data has been read in, compute the number of rows, columns, and nonzeros
-  void update() {
-    num_rows = row.back();
-    num_cols = *std::max_element(col.begin(), col.end());
-    num_nonzero = val.size();
-    std::cout << "COO Updated: [Rows, Columns, Non Zeros] [" << num_rows << ", " << num_cols << ", " << num_nonzero << "] " << std::endl;
+  void Convert(const COO & data){
+    //Initialize the CSR structure
+    num_rows = data.num_rows;
+    num_cols = data.num_cols;
+    num_nonzero = data.num_nonzero;
+
+    //The column data and value data will be the same
+    col = data.col;
+    val = data.val;
+    //row stores row pointer, the extra last item is total number of entries
+    row.reserve(num_rows + 1);
+
+    unsigned int count = 0;
+    for (int i = 0; i < data.num_nonzero; i++) {
+      // If we are at the first entry write a zero
+      if (i == 0) {
+        row[data.row[i]] = count;
+      } else if(data.row[i]!=data.row[i+1]){
+        row[data.row[i]] = count + 1;
+      }
+      count++;
+    }
+    row[num_rows] = data.num_nonzero;
   }
 };
 
