@@ -25,6 +25,11 @@ struct COO {
     num_nonzero = val.size();
     std::cout << "COO Updated: [Rows, Columns, Non Zeros] [" << num_rows << ", " << num_cols << ", " << num_nonzero << "] " << std::endl;
   }
+  void Print(){
+    for (int i = 0; i < num_nonzero; i++) {
+      std::cout<<row[i]<<" "<<col[i]<<" "<<val[i]<<std::endl;
+    }
+  }
 };
 
 //
