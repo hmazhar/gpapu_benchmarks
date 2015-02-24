@@ -20,8 +20,8 @@ struct COO {
   unsigned int num_nonzero;    // Number of non zeros
   // Once the data has been read in, compute the number of rows, columns, and nonzeros
   void Update() {
-    num_rows = row.back();
-    num_cols = *std::max_element(col.begin(), col.end());
+    num_rows = row.back() + 1;
+    num_cols = *std::max_element(col.begin(), col.end()) + 1;
     num_nonzero = val.size();
     std::cout << "COO Updated: [Rows, Columns, Non Zeros] [" << num_rows << ", " << num_cols << ", " << num_nonzero << "] " << std::endl;
   }
