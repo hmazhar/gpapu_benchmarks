@@ -24,8 +24,8 @@ void ReadSparse(COO& data, const std::string filename) {
       break;
     }
     ss >> j >> v;
-    data.row.push_back(i);
-    data.col.push_back(j);
+    data.row.push_back(i-1);
+    data.col.push_back(j-1);
     data.val.push_back(v);
   }
   data.Update();
