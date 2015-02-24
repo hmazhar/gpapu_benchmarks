@@ -133,26 +133,29 @@ int main(int argc, char* argv[]) {
   }
 
 
+  CSR D_T_csr, M_invD_csr;
+  D_T_csr.Convert(D_T);
+  M_invD_csr.Convert(M_invD);
 
+    {
+      std::cout << "VexCL Warmup:\n";
+      VexCLTest vexcl_test;
+      vexcl_test.CreateContext();
+      vexcl_test.WarmUp();
+      std::cout << "VexCL Warmup Complete:\n";
+      vex::SpMat<double> D_T_vex = vexcl_test.ConvertMatrix(D_T_csr);
+      std::cout << "Time to load D_T VexCL: " << elapsed.count() << std::endl;
+      vex::SpMat<double> M_invD_vex = vexcl_test.ConvertMatrix(M_invD_csr);
+      std::cout << "Time to load D_T M_invD: " << elapsed.count() << std::endl;
+      vex::vector<double> gamma_vex = vexcl_test.ConvertVector(gamma);
+      std::cout << "VexCL Test:\n";
+      start = std::chrono::system_clock::now();
+      vexcl_test.RunSPMV(D_T_vex, M_invD_vex, gamma_vex);
+      end = std::chrono::system_clock::now();
+      elapsed = end - start;
+      std::cout << "VexCL Time: " << elapsed.count() / RUNS << std::endl;
 
-
-
-  //
-  //  {
-  //    VexCLTest vexcl_test;
-  //    vexcl_test.CreateContext();
-  //    vexcl_test.WarmUp();
-  //    CSR D_T_csr = BlazeTest::ConvertSparse(D_T_blaze);
-  //    CSR M_invD_csr = BlazeTest::ConvertSparse(M_invD_blaze);
-  //    vex::SpMat<double> D_T_vex = vexcl_test.ConvertMatrix(D_T_csr);
-  //    vex::SpMat<double> M_invD_vex = vexcl_test.ConvertMatrix(M_invD_csr);
-  //    vex::vector<double> gamma_vex = vexcl_test.ConvertVector(gamma);
-  //
-  //    start = std::chrono::system_clock::now();
-  //    vexcl_test.RunSPMV(D_T_vex, M_invD_vex, gamma_vex);
-  //    end = std::chrono::system_clock::now();
-  //    vexcl_time = end - start;
-  //  }
+    }
 
   //
   //  // Compute some metrics and print them out

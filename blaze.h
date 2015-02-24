@@ -20,9 +20,6 @@ public:
 
   static blaze::DynamicVector<double> ConvertVector(const std::vector<double> & data);
   static blaze::CompressedMatrix<double> ConvertMatrix(const COO& data);
-
-  static CSR ConvertSparse(blaze::CompressedMatrix<double>& mat);    // Input: The matrix to be converted
-
   void RunSPMV(blaze::CompressedMatrix<double>& D_T, blaze::CompressedMatrix<double>& M_invD, blaze::DynamicVector<double>& gamma);
 };
 #endif
