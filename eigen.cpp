@@ -15,6 +15,14 @@ void  EigenTest::ConvertMatrix(const std::vector<Eigen::Triplet<double> >& data,
   output.setFromTriplets(data.begin(), data.end());
 }
 
+void  EigenTest::ConvertMatrixAlt(const std::vector<Eigen::Triplet<double> >& data, const COO& coo_data, Eigen::SparseMatrix<double> & output) {
+  std::cout<<"Creating an Eigen Sparse matrix "<<coo_data.num_rows<<" "<<coo_data.num_cols<<" "<<data.size()<<std::endl;
+  for (int i = 0; i < coo_data.num_nonzero; i++) {
+    output.insert(coo_data.row[i],coo_data.col[i]) = coo_data.val[i];
+  }
+}
+
+
 std::vector<Eigen::Triplet<double> > EigenTest::ConvertCOO(const COO& data) {
   std::vector<Eigen::Triplet<double> > triplet_data;
 
